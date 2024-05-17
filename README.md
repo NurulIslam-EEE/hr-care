@@ -1,17 +1,23 @@
 # HRM Application (HR Care)
 
-[Live Link](https://hrcare.netlify.app/) ||
-[Github Server](https://github.com/md-mh/hr-care-backend)
+[Live Link](https://hr-care-web.netlify.app/) ||
+[Github Server](https://github.com/NurulIslam-EEE/hr-care-backend)
 
+<!-- https://hrcare.netlify.app/ -->
+<!-- https://github.com/md-mh/hr-care-backend -->
 
 ## Project Type
+
 This is human resource management software also known as payroll software. Using this software, a company can manage their employer details, attendance, leave, vacation, salary etc.
 
-##  Goal 
-Create a complete HRM system for any company to maintain a database of their employers, including daily attendance, personal information, performance, monthly employer salary sheet prepare, etc 
+## Goal
+
+Create a complete HRM system for any company to maintain a database of their employers, including daily attendance, personal information, performance, monthly employer salary sheet prepare, etc
 
 ## This Application Features
+
 ### Employers panel:
+
 - Employee Registration: There will be added new employer name, nid, birthday, father's name, mother's name, department, position etc.
 - Announcement Show: Shows the announcement for the employer from the administrator
 - Daily Attendance: Employees can input daily attendance by verifying the QR code from their ID card.
@@ -19,6 +25,7 @@ Create a complete HRM system for any company to maintain a database of their emp
 - Course: Employees may be admitted to the required skill development course
 
 ### Admin panel:
+
 - Confirm any employer by updating employer DOJ, Salary (Basic, Household, Other), etc.
 - Employees ID Card Generate: Create the employer's ID card as a PDF so that it contains information like the employer's ID, name, category, date of joining etc.
 - Attendance Management: Admin can check employees attendance by searching ID and also filter by date range.
@@ -30,12 +37,11 @@ Create a complete HRM system for any company to maintain a database of their emp
 - Education and professional development course system has been added
 
 ## Technologies used
+
 React, Material UI, Node, Express, Mongodb, Mongoose, Firebase, ContextAPI, React Router DOM v6, etc.
 
 ## Conclusion
+
 We hope that once our system is developed it will be helpful for a company to retain their employees' information.
-
-
-
 
 </ul>
