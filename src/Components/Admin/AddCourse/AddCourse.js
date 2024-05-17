@@ -1,13 +1,20 @@
-import { Box, Breadcrumbs, Button, Container, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Breadcrumbs,
+  Button,
+  Container,
+  TextField,
+  Typography,
+} from "@mui/material";
 import axios from "axios";
 import React from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 
 // Breadcrumbs
-import Chip from '@mui/material/Chip';
-import { emphasize, styled } from '@mui/material/styles';
-import HomeIcon from '@mui/icons-material/Home';
+import Chip from "@mui/material/Chip";
+import { emphasize, styled } from "@mui/material/styles";
+import HomeIcon from "@mui/icons-material/Home";
 import { Link } from "react-router-dom";
 
 const AddCourse = () => {
@@ -19,7 +26,10 @@ const AddCourse = () => {
     formState: { errors },
   } = useForm();
   const onSubmit = (data) => {
-    axios.post("https://ancient-thicket-61342.herokuapp.com/courses", data);
+    axios.post(
+      "https://hr-care-nurulislameees-projects.vercel.app/courses",
+      data
+    );
     reset();
     Swal.fire({
       position: "middle",
@@ -33,7 +43,7 @@ const AddCourse = () => {
   // Breadcrumbs
   const StyledBreadcrumb = styled(Chip)(({ theme }) => {
     const backgroundColor =
-      theme.palette.mode === 'light'
+      theme.palette.mode === "light"
         ? theme.palette.grey[100]
         : theme.palette.grey[800];
     return {
@@ -41,10 +51,10 @@ const AddCourse = () => {
       height: theme.spacing(3),
       color: theme.palette.text.primary,
       fontWeight: theme.typography.fontWeightRegular,
-      '&:hover, &:focus': {
+      "&:hover, &:focus": {
         backgroundColor: emphasize(backgroundColor, 0.06),
       },
-      '&:active': {
+      "&:active": {
         boxShadow: theme.shadows[1],
         backgroundColor: emphasize(backgroundColor, 0.12),
       },
@@ -54,8 +64,7 @@ const AddCourse = () => {
     <Container>
       {/* Breadcrumbs */}
       <Box sx={{ mb: 4 }}>
-        <Typography
-          sx={{ mt: 2, color: 'var(--p_color)' }} variant="h4">
+        <Typography sx={{ mt: 2, color: "var(--p_color)" }} variant="h4">
           Add New Courses
         </Typography>
         <Breadcrumbs aria-label="breadcrumb">
@@ -66,7 +75,9 @@ const AddCourse = () => {
               icon={<HomeIcon fontSize="small" />}
             />
           </Link>
-          <Link to="/dashboard/add_course"><StyledBreadcrumb component="a" href="#" label="Add Course" /></Link>
+          <Link to="/dashboard/add_course">
+            <StyledBreadcrumb component="a" href="#" label="Add Course" />
+          </Link>
         </Breadcrumbs>
       </Box>
 

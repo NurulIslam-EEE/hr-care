@@ -24,7 +24,7 @@ const AddAnnouncement = () => {
   const [employees, setEmployees] = useState([]);
 
   useEffect(() => {
-    fetch("https://ancient-thicket-61342.herokuapp.com/employees")
+    fetch("https://hr-care-nurulislameees-projects.vercel.app/employees")
       .then((res) => res.json())
       .then((data) => setEmployees(data.result));
   }, []);
@@ -40,10 +40,10 @@ const AddAnnouncement = () => {
   const { register, handleSubmit, reset } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
+    // console.log(data);
 
     employees.map((user) =>
-      fetch("https://ancient-thicket-61342.herokuapp.com/announcement", {
+      fetch("https://hr-care-nurulislameees-projects.vercel.app/announcement", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({

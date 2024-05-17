@@ -2,25 +2,25 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { makeStyles } from "@mui/styles";
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
+import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
 import { Divider, FormGroup, Grid, MenuItem } from "@mui/material";
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-import EditIcon from '@mui/icons-material/Edit';
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import EditIcon from "@mui/icons-material/Edit";
 const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  height: '90vh',
-  width: { xs: '90%', md: '70%' },
-  overflowY: 'scroll',
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  borderRadius: '10px',
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  height: "90vh",
+  width: { xs: "90%", md: "70%" },
+  overflowY: "scroll",
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  borderRadius: "10px",
   boxShadow: 24,
   p: { xs: 2, sm: 4, md: 4 },
 };
@@ -55,11 +55,14 @@ const EmployeeModal = ({ item }) => {
   } = item;
   const { register, handleSubmit } = useForm();
   const onSubmit = (data) => {
-    fetch(`https://ancient-thicket-61342.herokuapp.com/employees/${_id}`, {
-      method: "PUT",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(data),
-    })
+    fetch(
+      `https://hr-care-nurulislameees-projects.vercel.app/employees/${_id}`,
+      {
+        method: "PUT",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(data),
+      }
+    )
       .then((res) => res.json())
       .then((data) => console.log(data));
     Swal.fire("Employee Information Update Successfully");
@@ -72,33 +75,31 @@ const EmployeeModal = ({ item }) => {
 
   const useStyle = makeStyles({
     inputFiend: {
-      width: '100% !important'
+      width: "100% !important",
     },
     title: {
-      margin: '15px 0 10px !important',
-      fontSize: 'var(--PT_font)',
-      fontWeight: '400 !important'
+      margin: "15px 0 10px !important",
+      fontSize: "var(--PT_font)",
+      fontWeight: "400 !important",
     },
     deleteBox: {
-      position: 'sticky',
-      background: '#fff',
-      marginLeft: 'auto',
-      top: '0',
-      right: '0',
-      height: '40px',
-      width: '40px',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      borderRadius: '50%',
-      boxShadow: '1px 10px 30px #b6b7b7 !important',
-      cursor: 'pointer',
-      zIndex: '99'
-    }
-  })
+      position: "sticky",
+      background: "#fff",
+      marginLeft: "auto",
+      top: "0",
+      right: "0",
+      height: "40px",
+      width: "40px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      borderRadius: "50%",
+      boxShadow: "1px 10px 30px #b6b7b7 !important",
+      cursor: "pointer",
+      zIndex: "99",
+    },
+  });
   const { inputFiend, title, deleteBox } = useStyle();
-
-
 
   const [onestatus, setStatus] = useState();
 
@@ -121,7 +122,12 @@ const EmployeeModal = ({ item }) => {
   ];
   return (
     <>
-      <Button onClick={handleOpen} sx={{ border: '1px solid #ccc' ,color:"#01578A !important"}}>Edit <EditIcon sx={{fontSize:"1.1rem"}}/></Button>
+      <Button
+        onClick={handleOpen}
+        sx={{ border: "1px solid #ccc", color: "#01578A !important" }}
+      >
+        Edit <EditIcon sx={{ fontSize: "1.1rem" }} />
+      </Button>
       <Modal
         keepMounted
         open={open}
@@ -131,17 +137,15 @@ const EmployeeModal = ({ item }) => {
       >
         <Box sx={style}>
           <Box onClick={handleClose} className={deleteBox}>
-            <CloseRoundedIcon sx={{ color: '#fb3e6a' }} />
+            <CloseRoundedIcon sx={{ color: "#fb3e6a" }} />
           </Box>
 
-          <Typography sx={{ mb: 4, color: 'var(--p_color)' }} variant="h4">
+          <Typography sx={{ mb: 4, color: "var(--p_color)" }} variant="h4">
             <Divider textAlign="left">Employee Information</Divider>
           </Typography>
 
           <FormGroup sx={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
-            <Box
-              component="form"
-            >
+            <Box component="form">
               <Grid container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
                 {/* ID */}
                 <Grid item xs={2} sm={4} md={6}>
@@ -156,7 +160,6 @@ const EmployeeModal = ({ item }) => {
                     className={inputFiend}
                   />
                 </Grid>
-
 
                 {/* status */}
                 <Grid item xs={2} sm={4} md={6}>
@@ -445,7 +448,6 @@ const EmployeeModal = ({ item }) => {
                 Education
               </Typography>
               <Grid container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
-
                 {/* Institute */}
                 <Grid item xs={2} sm={4} md={6}>
                   <TextField
@@ -503,7 +505,7 @@ const EmployeeModal = ({ item }) => {
                 className="btn_regular"
                 variant="outlined"
                 type="submit"
-                sx={{ width: '100%', mt: 2 }}
+                sx={{ width: "100%", mt: 2 }}
               >
                 Update
               </Button>

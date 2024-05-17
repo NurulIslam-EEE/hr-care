@@ -14,10 +14,10 @@ import Chip from "@mui/material/Chip";
 import LineChartsChartJs from "../Charts/LineChartsChartJs";
 import PieChartsChartJs from "../Charts/PieChartsChartJs";
 import dateFormat from "../../Share/DateFormat/dateFormat";
-import DateRangeIcon from '@mui/icons-material/DateRange';
-import CoPresentIcon from '@mui/icons-material/CoPresent';
-import PersonOffIcon from '@mui/icons-material/PersonOff';
-import HolidayVillageIcon from '@mui/icons-material/HolidayVillage';
+import DateRangeIcon from "@mui/icons-material/DateRange";
+import CoPresentIcon from "@mui/icons-material/CoPresent";
+import PersonOffIcon from "@mui/icons-material/PersonOff";
+import HolidayVillageIcon from "@mui/icons-material/HolidayVillage";
 import useAuth from "../../../hooks/useAuth";
 
 import List from "@mui/material/List";
@@ -26,9 +26,10 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Checkbox from "@mui/material/Checkbox";
 
-import fun from '../../../assets/images/fun2.png';
+import fun from "../../../assets/images/fun2.png";
 import LeaveCalender from "./LeaveCalender/LeaveCalender";
-
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTask } from "../../../redux/slices/employeeDashboardSlice.js";
 
 const EmployeeDashboardHome = () => {
   const { user } = useAuth();
@@ -39,7 +40,7 @@ const EmployeeDashboardHome = () => {
   const [sickLeave, setSickLeave] = useState([]);
   const [casualLeave, setCasualLeave] = useState([]);
 
-  console.log("leave", leave, sickLeave, casualLeave)
+  // console.log("leave", leave, sickLeave, casualLeave);
   const [toDo, setToDo] = useState([]);
   const [checked, setChecked] = React.useState([]);
   const [thisMonthTask, setThisMonthTask] = React.useState([]);
@@ -56,9 +57,7 @@ const EmployeeDashboardHome = () => {
   const lastDay = parseInt(currentDate.split("-")[2]);
 
   useEffect(() => {
-    fetch(
-      `https://ancient-thicket-61342.herokuapp.com/attendance/${user.email}`
-    )
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/attendance/${user.email}`)
       .then((res) => res.json())
       .then((data) => {
         const filteredData = data?.result?.filter(
@@ -69,45 +68,59 @@ const EmployeeDashboardHome = () => {
           (y) => y.status === "Holiday"
         );
         const filteredLeave = data?.result?.filter((y) => y.status === "Leave");
-        const filteredPresent = data?.result?.filter((y) => y.status === "Present");
-        const filteredSickLeave = data?.result?.filter((y) => y.vacation === "Sick Leave");
-        const filteredCasualLeave = data?.result?.filter((y) => y.vacation === "Casual Leave");
+        const filteredPresent = data?.result?.filter(
+          (y) => y.status === "Present"
+        );
+        const filteredSickLeave = data?.result?.filter(
+          (y) => y.vacation === "Sick Leave"
+        );
+        const filteredCasualLeave = data?.result?.filter(
+          (y) => y.vacation === "Casual Leave"
+        );
         setLeave(filteredLeave);
         setAttendance(filteredData);
         setHoliday(filteredHoliday);
-        setPresent(filteredPresent)
-        setSickLeave(filteredSickLeave)
-        setCasualLeave(filteredCasualLeave)
-        console.log(data.result, filteredData, filteredHoliday);
+        setPresent(filteredPresent);
+        setSickLeave(filteredSickLeave);
+        setCasualLeave(filteredCasualLeave);
+        // console.log(data.result, filteredData, filteredHoliday);
       });
   }, [dateString, user?.email]);
 
+  // redux
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchTask());
+  }, [dispatch, user?.email, taskUpdate, currentDate, checked, dateString]);
+
+  const allTasks = useSelector((state) => state?.employee?.task);
+  // console.log(allTasks);
   //assign task
   useEffect(() => {
-    fetch("https://ancient-thicket-61342.herokuapp.com/taskAssign")
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/taskAssign`)
       .then((res) => res.json())
-      .then((data) => {
-        const filterThisMonthTask = data?.data?.filter(
-          (task) =>
-            task.email === user.email && task.date.split("-")[1] === dateString
-        );
-        const filterTask = data?.data?.filter(
-          (task) => task.email === user.email && task.date === currentDate
-        );
-        setToDo(filterTask);
-        setChecked(filterTask[0]?.taskDone);
-        setThisMonthTask(filterThisMonthTask);
-      });
-  }, [taskUpdate, user.email, currentDate, checked, dateString]);
-
+      .then((data) => {});
+    const filterThisMonthTask = allTasks?.data?.filter(
+      (task) =>
+        task.email === user?.email && task.date.split("-")[1] === dateString
+    );
+    const filterTask = allTasks?.data?.filter(
+      (task) => task.email === user?.email && task.date === currentDate
+    );
+    setToDo(filterTask);
+    filterTask?.length > 0 && setChecked(filterTask[0]?.taskDone);
+    setThisMonthTask(filterThisMonthTask);
+    // console.log(filterThisMonthTask, filterTask);
+  }, [taskUpdate, user.email, currentDate, checked, dateString, allTasks]);
+  // console.log(toDo, checked);
   // task summary
   let totalTask = 0;
   let doneTask = 0;
-  thisMonthTask.map(task => {
-    totalTask += task?.tags?.length
-    doneTask += task?.taskDone?.length
-  })
-  console.log(totalTask, doneTask)
+  thisMonthTask?.map((task) => {
+    totalTask += task?.tags?.length;
+    doneTask += task?.taskDone?.length;
+  });
+  // console.log(totalTask, doneTask);
 
   const StyledBreadcrumb = styled(Chip)(({ theme }) => {
     const backgroundColor =
@@ -143,7 +156,7 @@ const EmployeeDashboardHome = () => {
       alignItems: "center",
       justifyContent: "space-between",
       background: "#00D2FC",
-    }
+    },
   });
 
   const { dashText, dashBox } = useStyle();
@@ -160,7 +173,7 @@ const EmployeeDashboardHome = () => {
     }
 
     setChecked(newChecked);
-    fetch(`https://ancient-thicket-61342.herokuapp.com/taskAssign`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/taskAssign`, {
       method: "PUT",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
@@ -266,7 +279,9 @@ const EmployeeDashboardHome = () => {
                 variant="h3"
                 sx={{ textAlign: "center", color: "#fb3e6a", py: 1 }}
               >
-                {leftPad(lastDay - present.length - holiday.length - leave.length)}
+                {leftPad(
+                  lastDay - present.length - holiday.length - leave.length
+                )}
               </Typography>
             </Box>
           </Grid>
@@ -303,16 +318,37 @@ const EmployeeDashboardHome = () => {
         <Grid container spacing={3}>
           <Grid item xs={12} md={4}>
             <Paper elevation={6} sx={{ pt: 2, pb: 3 }}>
-              <Typography variant="h5" sx={{ textAlign: 'center', fontFamily: 'var(--PT_font)', mb: 1 }}>
+              <Typography
+                variant="h5"
+                sx={{
+                  textAlign: "center",
+                  fontFamily: "var(--PT_font)",
+                  mb: 1,
+                }}
+              >
                 Leave Structure
               </Typography>
-              <PieChartsChartJs casualLeave={casualLeave} sickLeave={sickLeave} ></PieChartsChartJs>
+              <PieChartsChartJs
+                casualLeave={casualLeave}
+                sickLeave={sickLeave}
+              ></PieChartsChartJs>
             </Paper>
           </Grid>
 
           <Grid item xs={12} md={8}>
-            <Paper elevation={6} sx={{ maxWidth: { xs: '340px', sm: '100%', md: '100%' }, margin: 'auto', height: '100%', border: '1px solid #b6b7b7', p: 2 }}>
-              <LineChartsChartJs thisMonthTask={thisMonthTask}></LineChartsChartJs>
+            <Paper
+              elevation={6}
+              sx={{
+                maxWidth: { xs: "340px", sm: "100%", md: "100%" },
+                margin: "auto",
+                height: "100%",
+                border: "1px solid #b6b7b7",
+                p: 2,
+              }}
+            >
+              <LineChartsChartJs
+                thisMonthTask={thisMonthTask}
+              ></LineChartsChartJs>
             </Paper>
           </Grid>
         </Grid>
@@ -323,92 +359,167 @@ const EmployeeDashboardHome = () => {
         <Grid container spacing={3}>
           <Grid item xs={12} md={4}>
             <Paper elevation={6}>
-              <List dense sx={{ height: '350px', width: '100%' }}>
-                <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-around", mb: 1 }}>
-                  <Typography variant="h5" sx={{ textAlign: 'center', fontFamily: 'var(--PT_font)' }}>
+              <List dense sx={{ height: "350px", width: "100%" }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-around",
+                    mb: 1,
+                  }}
+                >
+                  <Typography
+                    variant="h5"
+                    sx={{ textAlign: "center", fontFamily: "var(--PT_font)" }}
+                  >
                     Assign Task
                   </Typography>
-                  <TaskIcon sx={{ color: '#00D2FC', fontSize: '3rem' }} />
+                  <TaskIcon sx={{ color: "#00D2FC", fontSize: "3rem" }} />
                 </Box>
                 <Divider />
 
-                {toDo[0]?.tags ? <>{toDo[0]?.tags?.map((value) => {
-                  const labelId = `checkbox-list-secondary-label-${value}`;
-                  return (
-                    <ListItem
-                      key={value}
-                      secondaryAction={
-                        <Checkbox
-                          edge="end"
-                          onChange={handleToggle(value)}
-                          checked={toDo[0]?.taskDone.indexOf(value) !== -1}
-                          inputProps={{ "aria-labelledby": labelId }}
-                        />
-                      }
-                      disablePadding
+                {toDo?.length > 0 && toDo[0]?.tags ? (
+                  <>
+                    {toDo[0]?.tags?.map((value) => {
+                      const labelId = `checkbox-list-secondary-label-${value}`;
+                      return (
+                        <ListItem
+                          key={value}
+                          secondaryAction={
+                            <Checkbox
+                              edge="end"
+                              onChange={handleToggle(value)}
+                              checked={toDo[0]?.taskDone.indexOf(value) !== -1}
+                              inputProps={{ "aria-labelledby": labelId }}
+                            />
+                          }
+                          disablePadding
+                        >
+                          <ListItemButton>
+                            <ListItemText id={value._id} primary={value} />
+                          </ListItemButton>
+                        </ListItem>
+                      );
+                    })}
+                  </>
+                ) : (
+                  <Box
+                    sx={{
+                      height: "100%",
+                      width: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <Typography variant="h5">No Task Assign Yet</Typography>
+                    <Box
+                      sx={{
+                        height: "80%",
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
                     >
-                      <ListItemButton>
-                        <ListItemText id={value._id} primary={value} />
-                      </ListItemButton>
-                    </ListItem>
-                  );
-                })}</>
-                  : <Box sx={{ height: '100%', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
-                    <Typography variant="h5">
-                      No Task Assign Yet
-                    </Typography>
-                    <Box sx={{ height: '80%', width: '100%', display: 'flex', justifyContent: 'center' }}>
-                      <img src={fun} height='220px' width='220px' alt="" />
+                      <img src={fun} height="220px" width="220px" alt="" />
                     </Box>
-                  </Box>}
+                  </Box>
+                )}
               </List>
             </Paper>
           </Grid>
 
           {/* task summary */}
           <Grid item xs={12} md={4}>
-            <Paper elevation={6} sx={{ height: '350px', width: '100%' }}>
-              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-around", py: 1 }}>
-                <Typography variant="h5" sx={{ textAlign: 'center', fontFamily: 'var(--PT_font)' }}>
+            <Paper elevation={6} sx={{ height: "350px", width: "100%" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-around",
+                  py: 1,
+                }}
+              >
+                <Typography
+                  variant="h5"
+                  sx={{ textAlign: "center", fontFamily: "var(--PT_font)" }}
+                >
                   Leave Dates
                 </Typography>
-                <DateRangeIcon sx={{ color: '#00D2FC', fontSize: '3rem' }} />
+                <DateRangeIcon sx={{ color: "#00D2FC", fontSize: "3rem" }} />
               </Box>
               <Divider />
 
-              <Box sx={{ display: "flex", width: '100%', justifyContent: "center" }}>
-                <LeaveCalender sx={{ width: '100%', boxShadow: '0', margin: '0 auto' }} leave={leave} />
+              <Box
+                sx={{
+                  display: "flex",
+                  width: "100%",
+                  justifyContent: "center",
+                }}
+              >
+                <LeaveCalender
+                  sx={{ width: "100%", boxShadow: "0", margin: "0 auto" }}
+                  leave={leave}
+                />
               </Box>
             </Paper>
           </Grid>
 
           {/* meeting card */}
           <Grid item xs={12} md={4}>
-            <Paper elevation={6} sx={{ height: '350px', width: '100%' }}>
-              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-around", py: 1 }}>
-                <Typography variant="h5" sx={{ textAlign: 'center', fontFamily: 'var(--PT_font)' }}>
+            <Paper elevation={6} sx={{ height: "350px", width: "100%" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-around",
+                  py: 1,
+                }}
+              >
+                <Typography
+                  variant="h5"
+                  sx={{ textAlign: "center", fontFamily: "var(--PT_font)" }}
+                >
                   Meeting
                 </Typography>
-                <GroupsIcon sx={{ color: '#00D2FC', fontSize: '3rem' }} />
+                <GroupsIcon sx={{ color: "#00D2FC", fontSize: "3rem" }} />
               </Box>
               <Divider />
 
-              {toDo[0]?.startTime ? <Box sx={{ mt: 1, ml: 2 }}>
-                <Typography variant="h5" component="div">
-                  Meeting Today
-                </Typography>
-                <Typography variant="body2">
-                  {toDo[0]?.startTime}AM
-                </Typography>
-              </Box> :
-                <Box sx={{ height: '100%', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
-                  <Typography variant="h5">
-                    No Meeting Schedule Yet
+              {toDo?.length > 0 && toDo[0]?.startTime ? (
+                <Box sx={{ mt: 1, ml: 2 }}>
+                  <Typography variant="h5" component="div">
+                    Meeting Today
                   </Typography>
-                  <Box sx={{ height: '80%', width: '100%', display: 'flex', justifyContent: 'center' }}>
-                    <img src={fun} height='220px' width='220px' alt="" />
+                  <Typography variant="body2">
+                    {toDo[0]?.startTime}AM
+                  </Typography>
+                </Box>
+              ) : (
+                <Box
+                  sx={{
+                    height: "100%",
+                    width: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexDirection: "column",
+                  }}
+                >
+                  <Typography variant="h5">No Meeting Schedule Yet</Typography>
+                  <Box
+                    sx={{
+                      height: "80%",
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <img src={fun} height="220px" width="220px" alt="" />
                   </Box>
-                </Box>}
+                </Box>
+              )}
             </Paper>
           </Grid>
         </Grid>

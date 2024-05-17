@@ -8,7 +8,7 @@ const HolidayCalendar = (props) => {
   const [newEvent, setNewEvent] = useState([]);
   const localizer = momentLocalizer(moment);
   useEffect(() => {
-    fetch("https://ancient-thicket-61342.herokuapp.com/holidays")
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/holidays`)
       .then((res) => res.json())
       .then((data) => setNewEvent(data.data));
   }, []);

@@ -1,9 +1,9 @@
 const firebaseConfig = {
-  apiKey: "AIzaSyB7uV84HDvwFLq17scbtsdzW1kbA8A0w_w",
-  authDomain: "hr-care-6befb.firebaseapp.com",
-  projectId: "hr-care-6befb",
-  storageBucket: "hr-care-6befb.appspot.com",
-  messagingSenderId: "106619355149",
-  appId: "1:106619355149:web:63630dff5bafb801549544"
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
 };
 export default firebaseConfig;

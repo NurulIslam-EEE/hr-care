@@ -8,18 +8,20 @@ const BestEmployee = (props) => {
 
   const [bestEmp, setBestEmp] = useState([]);
   useEffect(() => {
-    fetch("https://ancient-thicket-61342.herokuapp.com/taskAssign")
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/taskAssign`)
       .then((res) => res.json())
       .then((data) => setBestEmp(data.data));
   }, []);
 
-  const [singleId, setSingleId] = useState({})
+  const [singleId, setSingleId] = useState({});
   useEffect(() => {
-    fetch(`https://ancient-thicket-61342.herokuapp.com/employees/photo/${finalPoint[0]?.email}`)
+    fetch(
+      `${process.env.REACT_APP_BACKEND_URL}/employees/photo/${finalPoint[0]?.email}`
+    )
       .then((res) => res.json())
       .then((data) => setSingleId(data.result));
   }, [finalPoint]);
-  console.log(singleId[0])
+  console.log(singleId[0]);
 
   function leftPad(number) {
     var output = number + "";
@@ -108,7 +110,10 @@ const BestEmployee = (props) => {
         <Box className={cardContainer}>
           <Card className={cardBox}>
             <Box className={awardBox}>
-              <Typography sx={{ fontFamily: "var(--PT_font)", mt: 1 }} variant="h5">
+              <Typography
+                sx={{ fontFamily: "var(--PT_font)", mt: 1 }}
+                variant="h5"
+              >
                 Best Employee
               </Typography>
               <Typography sx={{ fontFamily: "var(--PT_font)" }} variant="body1">

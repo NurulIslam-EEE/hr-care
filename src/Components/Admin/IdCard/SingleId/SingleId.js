@@ -7,19 +7,29 @@ import { makeStyles } from "@mui/styles";
 import { Box, Divider, Paper, Typography } from "@mui/material";
 import director from "../../../../assets/images/director.png";
 
-
 const SingleId = ({ employeeId }) => {
+  const {
+    ID,
+    name,
+    DOJ,
+    birth,
+    blood,
+    department,
+    designation,
+    phone,
+    image,
+    qrUrl,
+  } = employeeId;
 
-  const { ID, name, DOJ, birth, blood, department, designation, phone, image, qrUrl } = employeeId;
-
-  const [oneEmployeeId, setOneEmployeeId] = useState({})
+  const [oneEmployeeId, setOneEmployeeId] = useState({});
   useEffect(() => {
-    fetch(`https://ancient-thicket-61342.herokuapp.com/employees/photo/${employeeId?.email}`)
+    fetch(
+      `https://hr-care-nurulislameees-projects.vercel.app/employees/photo/${employeeId?.email}`
+    )
       .then((res) => res.json())
       .then((data) => setOneEmployeeId(data.result));
   }, [employeeId]);
-  console.log(oneEmployeeId[0]?.photo)
-
+  console.log(oneEmployeeId[0]?.photo);
 
   const pdfExportComponent = useRef(null);
   const handleOnclick = () => {
@@ -82,7 +92,7 @@ const SingleId = ({ employeeId }) => {
               <img
                 src="https://i.ibb.co/7KZFxyc/hr-care-logo.png"
                 alt="hr care"
-                style={{ width: '45%' }}
+                style={{ width: "45%" }}
               />
             </Typography>
           </Box>
@@ -118,9 +128,7 @@ const SingleId = ({ employeeId }) => {
                 <Typography className={textBold} variant="body2">
                   ID NO
                 </Typography>
-                <Typography variant="body2">
-                  {ID}
-                </Typography>
+                <Typography variant="body2">{ID}</Typography>
               </Grid>
               <Grid item xs={4}>
                 <Typography className={textBold} variant="body2">
@@ -180,15 +188,13 @@ const SingleId = ({ employeeId }) => {
 
               <Grid item xs={4}>
                 <Box sx={{ textAlign: "center" }}>
-                  {
-                    qrUrl && (
-                      <img
-                        width="100% !important"
-                        src={`data:image/jpeg;base64,${qrUrl.split(",")[1]}`}
-                        alt="Employee QrCode"
-                      />
-                    )
-                  }
+                  {qrUrl && (
+                    <img
+                      width="100% !important"
+                      src={`data:image/jpeg;base64,${qrUrl.split(",")[1]}`}
+                      alt="Employee QrCode"
+                    />
+                  )}
                 </Box>
               </Grid>
               <Grid item xs={4}>

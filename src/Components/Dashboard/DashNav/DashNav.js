@@ -96,16 +96,18 @@ const DashNav = () => {
   const holidayClose = () => setHoliday(false);
   // get data
   useEffect(() => {
-    fetch(`https://ancient-thicket-61342.herokuapp.com/employees/photo/${user.email}`)
+    fetch(
+      `https://hr-care-nurulislameees-projects.vercel.app/employees/photo/${user.email}`
+    )
       .then((res) => res.json())
-      .then((data) => setEmployee(data.result));
-  }, [user.email, employee]);
+      .then((data) => setEmployee(data?.result));
+  }, [user?.email, employee]);
   //form submit
   const handleSubmit = (e) => {
     const formData = new FormData();
     formData.append("photo", photo);
     fetch(
-      `https://ancient-thicket-61342.herokuapp.com/employees/profile/${user.email}`,
+      `https://hr-care-nurulislameees-projects.vercel.app/employees/profile/${user.email}`,
       {
         method: "PUT",
         body: formData,
@@ -113,7 +115,7 @@ const DashNav = () => {
     )
       .then((response) => response.json())
       .then((result) => {
-        console.log("Success:", result);
+        // console.log("Success:", result);
         setPhotoUrl(!photoURL);
       })
       .catch((error) => {

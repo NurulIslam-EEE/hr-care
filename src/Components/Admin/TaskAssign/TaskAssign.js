@@ -80,13 +80,13 @@ const TaskAssign = () => {
   };
 
   useEffect(() => {
-    fetch("https://ancient-thicket-61342.herokuapp.com/employees")
+    fetch("https://hr-care-nurulislameees-projects.vercel.app/employees")
       .then((res) => res.json())
       .then((data) => setEmployees(data.result));
   }, []);
   //submit form
   const onSubmit = (data, e) => {
-    fetch("https://ancient-thicket-61342.herokuapp.com/taskAssign", {
+    fetch("https://hr-care-nurulislameees-projects.vercel.app/taskAssign", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
@@ -106,15 +106,18 @@ const TaskAssign = () => {
 
   //get task
   useEffect(() => {
-    fetch("https://ancient-thicket-61342.herokuapp.com/taskAssign")
+    fetch("https://hr-care-nurulislameees-projects.vercel.app/taskAssign")
       .then((res) => res.json())
       .then((data) => setTask(data.data));
   }, [task]);
   // delete
   const handleDelete = (item) => {
-    fetch(`https://ancient-thicket-61342.herokuapp.com/taskAssign/${item._id}`, {
-      method: "DELETE",
-    })
+    fetch(
+      `https://hr-care-nurulislameees-projects.vercel.app/taskAssign/${item._id}`,
+      {
+        method: "DELETE",
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         if (data.deletedCount === 1) {
@@ -168,7 +171,10 @@ const TaskAssign = () => {
                 >
                   <span style={{ color: " #01578A" }}> Assign </span> Task
                 </Typography>
-                <img src="https://img.icons8.com/ios-filled/50/000000/batch-assign.png" alt="icon" />
+                <img
+                  src="https://img.icons8.com/ios-filled/50/000000/batch-assign.png"
+                  alt="icon"
+                />
               </Box>
               <form sx={{ mb: 5, mt: 5 }} onSubmit={handleSubmit(onSubmit)}>
                 <Box sx={{ width: "100%" }}>
@@ -272,8 +278,21 @@ const TaskAssign = () => {
           </Grid>
 
           <Grid item xs={12} md={8} sm={0} sx={{ marginTop: "1rem" }}>
-            <TableContainer sx={{ maxWidth: { xs: '340px', sm: '100%', md: '100%' }, margin: 'auto' }} component={Paper}>
-              <Table sx={{ width: '100%', overflowX: 'scroll', whiteSpace: 'nowrap' }} aria-label="customized table">
+            <TableContainer
+              sx={{
+                maxWidth: { xs: "340px", sm: "100%", md: "100%" },
+                margin: "auto",
+              }}
+              component={Paper}
+            >
+              <Table
+                sx={{
+                  width: "100%",
+                  overflowX: "scroll",
+                  whiteSpace: "nowrap",
+                }}
+                aria-label="customized table"
+              >
                 <TableHead>
                   <TableRow>
                     <StyledTableCell>Employee</StyledTableCell>
@@ -299,7 +318,7 @@ const TaskAssign = () => {
                       <StyledTableCell align="center">
                         <Tooltip title="Delete">
                           <DeleteOutlineOutlinedIcon
-                            sx={{ cursor: "pointer",color:"#FF0000" }}
+                            sx={{ cursor: "pointer", color: "#FF0000" }}
                             onClick={() => handleDelete(item)}
                           />
                         </Tooltip>

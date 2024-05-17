@@ -5,7 +5,7 @@ export const fetchAnnouncement = createAsyncThunk(
   "announcement/fetchEvents",
   async () => {
     const response = await fetch(
-      "https://ancient-thicket-61342.herokuapp.com/announcement"
+      "https://hr-care-nurulislameees-projects.vercel.app/announcement"
     ).then((res) => res.json());
     return response;
   }
@@ -15,17 +15,9 @@ const eventsSlice = createSlice({
   name: "announcement",
   initialState: {
     discover: [],
+    status: "idle",
   },
-  reducers: {
-    addToOrderList: (state, { payload }) => {
-      state.orderList.push(payload);
-    },
-    removeFromOrderList: (state, { payload }) => {
-      state.orderList = state.orderList.filter(
-        (book) => book.id !== payload.id
-      );
-    },
-  },
+
   //fetch data
   extraReducers: (builder) => {
     builder.addCase(fetchAnnouncement.fulfilled, (state, action) => {
@@ -37,7 +29,5 @@ const eventsSlice = createSlice({
     });
   },
 });
-
-export const { addToOrderList, removeFromOrderList } = eventsSlice.actions;
 
 export default eventsSlice.reducer;

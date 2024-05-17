@@ -1,6 +1,12 @@
 import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
 import HomeIcon from "@mui/icons-material/Home";
-import { Breadcrumbs, Container, Grid, Typography, useTheme } from "@mui/material";
+import {
+  Breadcrumbs,
+  Container,
+  Grid,
+  Typography,
+  useTheme,
+} from "@mui/material";
 // Breadcrumbs
 import Chip from "@mui/material/Chip";
 import { emphasize, styled } from "@mui/material/styles";
@@ -88,7 +94,16 @@ const LeaveRequests = () => {
       color: "#ff7b3d",
     },
   });
-  const { announces, announceBox, activeAnnounceBox, announceTop, announceTitle, dateStyle, announceP, rightIcon } = useStyle();
+  const {
+    announces,
+    announceBox,
+    activeAnnounceBox,
+    announceTop,
+    announceTitle,
+    dateStyle,
+    announceP,
+    rightIcon,
+  } = useStyle();
 
   const [isActive, setActive] = useState();
   const handleClick = (id) => {
@@ -101,7 +116,7 @@ const LeaveRequests = () => {
   const [page, setPage] = useState(0);
   const [pageCount, setPageCount] = useState(0);
   useEffect(() => {
-    fetch("https://ancient-thicket-61342.herokuapp.com/leave")
+    fetch("https://hr-care-nurulislameees-projects.vercel.app/leave")
       .then((res) => res.json())
       .then((data) => {
         setData(data.data.reverse());
@@ -113,7 +128,10 @@ const LeaveRequests = () => {
 
   // Breadcrumbs
   const StyledBreadcrumb = styled(Chip)(({ theme }) => {
-    const backgroundColor = theme.palette.mode === "light" ? theme.palette.grey[100] : theme.palette.grey[800];
+    const backgroundColor =
+      theme.palette.mode === "light"
+        ? theme.palette.grey[100]
+        : theme.palette.grey[800];
     return {
       backgroundColor,
       height: theme.spacing(3),
@@ -137,7 +155,11 @@ const LeaveRequests = () => {
         </Typography>
         <Breadcrumbs aria-label="breadcrumb">
           <Link to="/dashboard">
-            <StyledBreadcrumb to="/dashboard" label="Dashboard" icon={<HomeIcon fontSize="small" />} />
+            <StyledBreadcrumb
+              to="/dashboard"
+              label="Dashboard"
+              icon={<HomeIcon fontSize="small" />}
+            />
           </Link>
           <Link to="/dashboard/leaveRequests">
             <StyledBreadcrumb component="a" href="#" label="Leave Requests" />
@@ -153,7 +175,11 @@ const LeaveRequests = () => {
                 <Typography sx={{ color: "gray" }}>
                   {data?.department}
                 </Typography>
-                <Box className={data._id === isActive ? activeAnnounceBox : announceBox}>
+                <Box
+                  className={
+                    data._id === isActive ? activeAnnounceBox : announceBox
+                  }
+                >
                   <Box sx={{ padding: "10px" }}>
                     <Box className={announceTop}>
                       <Typography sx={{ color: "gray" }}>
@@ -161,15 +187,17 @@ const LeaveRequests = () => {
                       </Typography>
                       <Box
                         variant="body2"
-                        className={data?.status === "pending" ? "pending-color" : "approved-color"}
+                        className={
+                          data?.status === "pending"
+                            ? "pending-color"
+                            : "approved-color"
+                        }
                       >
                         <Typography variant="body1">{data?.status}</Typography>
                       </Box>
                     </Box>
                     <Box>
-                      <Typography variant="h5">
-                        {data.name}
-                      </Typography>
+                      <Typography variant="h5">{data.name}</Typography>
                     </Box>
                     <Box className={announceTop}>
                       <Typography className={announces} variant="body1">
