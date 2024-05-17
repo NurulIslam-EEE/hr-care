@@ -39,9 +39,7 @@ const MyAttendance = (props) => {
 
   let time = new Date().toLocaleString();
   useEffect(() => {
-    fetch(
-      `https://ancient-thicket-61342.herokuapp.com/attendance/${user.email}`
-    )
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/attendance/${user.email}`)
       .then((res) => res.json())
       .then((data) => setTimes(data.result));
   }, [user.email, times]);
@@ -54,16 +52,14 @@ const MyAttendance = (props) => {
   // console.log(today?.date)
 
   useEffect(() => {
-    fetch(`https://ancient-thicket-61342.herokuapp.com/employees/photo/${user.email}`)
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/employees/photo/${user.email}`)
       .then((res) => res.json())
       .then((data) => setEmployee(data.result));
   }, [user.email]);
   //qrCode fetch
   const [qrCode, setQrCode] = useState([]);
   useEffect(() => {
-    fetch(
-      `https://ancient-thicket-61342.herokuapp.com/employees/${user.email}`
-    )
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/employees/${user.email}`)
       .then((res) => res.json())
       .then((data) => setQrCode(data.result));
   }, [user.email]);
@@ -82,7 +78,7 @@ const MyAttendance = (props) => {
     if (today?.date === entryTime.date) {
       Swal.fire("You already Punched In");
     } else {
-      fetch("https://ancient-thicket-61342.herokuapp.com/attendance/", {
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/attendance/`, {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(entryTime),
@@ -103,14 +99,11 @@ const MyAttendance = (props) => {
     let leaveTime = {};
     leaveTime.date = dateFormat(time.split(",")[0], "yyyy-MM-dd");
     if (today?.date === leaveTime.date) {
-      fetch(
-        `https://ancient-thicket-61342.herokuapp.com/attendance/${today._id}`,
-        {
-          method: "PUT",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify(leaveTime),
-        }
-      )
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/attendance/${today._id}`, {
+        method: "PUT",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(leaveTime),
+      })
         .then((res) => res.json())
         .then((data) => console.log(data));
       Swal.fire("You are Punched Out");

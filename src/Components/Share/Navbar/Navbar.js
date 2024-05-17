@@ -159,7 +159,7 @@ const Navbar = (props) => {
   const [employee, setEmployee] = useState([]);
   // get data
   useEffect(() => {
-    fetch(`https://ancient-thicket-61342.herokuapp.com/employees/photo/${user.email}`)
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/employees/photo/${user.email}`)
       .then((res) => res.json())
       .then((data) => setEmployee(data.result));
   }, [user.email, employee]);
@@ -336,7 +336,7 @@ const Navbar = (props) => {
                     </Link>
                   </Box>
                   {list}
-                  <Box sx={{ textAlign: 'center' }}>
+                  <Box sx={{ textAlign: "center" }}>
                     <NavLink className={navItem} to="/">
                       {user.email ? (
                         <Tooltip title="Account settings">

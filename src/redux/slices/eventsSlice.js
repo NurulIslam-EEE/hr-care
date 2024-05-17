@@ -5,7 +5,7 @@ export const fetchAnnouncement = createAsyncThunk(
   "announcement/fetchEvents",
   async () => {
     const response = await fetch(
-      "https://ancient-thicket-61342.herokuapp.com/announcement"
+      "https://hr-care-nurulislameees-projects.vercel.app/announcement"
     ).then((res) => res.json());
     return response;
   }
@@ -15,7 +15,7 @@ const eventsSlice = createSlice({
   name: "announcement",
   initialState: {
     discover: [],
-    status: 'idle'
+    status: "idle",
   },
 
   //fetch data
@@ -29,7 +29,5 @@ const eventsSlice = createSlice({
     });
   },
 });
-
-
 
 export default eventsSlice.reducer;

@@ -1,5 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Box, Breadcrumbs, Button, Container, Grid, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Breadcrumbs,
+  Button,
+  Container,
+  Grid,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { styled, alpha } from "@mui/material/styles";
 import Menu from "@mui/material/Menu";
 import Table from "@mui/material/Table";
@@ -12,16 +20,16 @@ import Paper from "@mui/material/Paper";
 import SalaryData from "./SalaryData/SalaryData";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 // Breadcrumbs
-import Chip from '@mui/material/Chip';
-import { emphasize } from '@mui/material/styles';
-import HomeIcon from '@mui/icons-material/Home';
+import Chip from "@mui/material/Chip";
+import { emphasize } from "@mui/material/styles";
+import HomeIcon from "@mui/icons-material/Home";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import dateFormat from "../../Share/DateFormat/dateFormat";
 import Swal from "sweetalert2";
 import { PDFExport } from "@progress/kendo-react-pdf";
-import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
 
 // style
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -77,7 +85,6 @@ const StyledMenu = styled((props) => (
 }));
 
 const SalarySheet = () => {
-
   const [employees, setEmployees] = useState([]);
   const { register, handleSubmit } = useForm();
   const [Dates, setDates] = useState([]);
@@ -85,39 +92,37 @@ const SalarySheet = () => {
   const [endDate, setEndDate] = useState();
   const [filterDates, setFilterDates] = useState([]);
 
-
   useEffect(() => {
-    fetch("https://ancient-thicket-61342.herokuapp.com/employees/rp")
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/employees/rp`)
       .then((res) => res.json())
       .then((data) => setEmployees(data.result));
   }, []);
   useEffect(() => {
-    fetch(`https://ancient-thicket-61342.herokuapp.com/attendance/`)
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/attendance/`)
       .then((res) => res.json())
       .then((data) => setDates(data.data));
-  }, [])
-  console.log(Dates)
+  }, []);
+  console.log(Dates);
 
   useEffect(() => {
-    const newFilterDate = Dates.filter(date => date?.date >= startDate && date?.date <= endDate)
-    setFilterDates(newFilterDate)
-  }, [Dates, startDate, endDate])
-  console.log(filterDates)
+    const newFilterDate = Dates.filter(
+      (date) => date?.date >= startDate && date?.date <= endDate
+    );
+    setFilterDates(newFilterDate);
+  }, [Dates, startDate, endDate]);
+  console.log(filterDates);
 
   const onSubmit = (data, e) => {
+    const newStartDate = dateFormat(new Date(data.startDate), "yyyy-MM-dd");
+    setStartDate(newStartDate);
+    const newEndDate = dateFormat(new Date(data.endDate), "yyyy-MM-dd");
+    setEndDate(newEndDate);
 
-    const newStartDate = dateFormat(new Date(data.startDate), 'yyyy-MM-dd');
-    setStartDate(newStartDate)
-    const newEndDate = dateFormat(new Date(data.endDate), 'yyyy-MM-dd');
-    setEndDate(newEndDate)
-
-    toast.success('Salary Process successfully 👌!', {
+    toast.success("Salary Process successfully 👌!", {
       position: toast.POSITION.BOTTOM_CENTER,
-      autoClose: 4000
-    })
+      autoClose: 4000,
+    });
   };
-
-
 
   //download salary in pdf format
 
@@ -131,7 +136,7 @@ const SalarySheet = () => {
   // Breadcrumbs
   const StyledBreadcrumb = styled(Chip)(({ theme }) => {
     const backgroundColor =
-      theme.palette.mode === 'light'
+      theme.palette.mode === "light"
         ? theme.palette.grey[100]
         : theme.palette.grey[800];
     return {
@@ -139,23 +144,21 @@ const SalarySheet = () => {
       height: theme.spacing(3),
       color: theme.palette.text.primary,
       fontWeight: theme.typography.fontWeightRegular,
-      '&:hover, &:focus': {
+      "&:hover, &:focus": {
         backgroundColor: emphasize(backgroundColor, 0.06),
       },
-      '&:active': {
+      "&:active": {
         boxShadow: theme.shadows[1],
         backgroundColor: emphasize(backgroundColor, 0.12),
       },
     };
   });
 
-
   return (
     <Container>
       {/* Breadcrumbs */}
       <Box sx={{ mb: 4 }}>
-        <Typography
-          sx={{ mt: 2, color: 'var(--p_color)' }} variant="h4">
+        <Typography sx={{ mt: 2, color: "var(--p_color)" }} variant="h4">
           Employees Salary Sheet
         </Typography>
         <Breadcrumbs aria-label="breadcrumb">
@@ -166,7 +169,9 @@ const SalarySheet = () => {
               icon={<HomeIcon fontSize="small" />}
             />
           </Link>
-          <Link to="/dashboard/salary_sheet"><StyledBreadcrumb component="a" href="#" label="Salary Sheet" /></Link>
+          <Link to="/dashboard/salary_sheet">
+            <StyledBreadcrumb component="a" href="#" label="Salary Sheet" />
+          </Link>
         </Breadcrumbs>
       </Box>
 
@@ -198,7 +203,12 @@ const SalarySheet = () => {
                     focused
                   />
                 </Grid>
-                <Grid item xs={12} md={4} sx={{ display: 'flex', alignItems: 'center' }}>
+                <Grid
+                  item
+                  xs={12}
+                  md={4}
+                  sx={{ display: "flex", alignItems: "center" }}
+                >
                   <Button
                     sx={{
                       background: "var(--p_color) !important",
@@ -215,14 +225,18 @@ const SalarySheet = () => {
             </form>
           </Grid>
 
-
           {/* Download Salary Sheet */}
-          <Grid item xs={12} md={3} sx={{ display: 'flex', alignItems: 'center' }}>
+          <Grid
+            item
+            xs={12}
+            md={3}
+            sx={{ display: "flex", alignItems: "center" }}
+          >
             <Button
               className="btn_regular"
               onClick={() => handleOnclick()}
               variant="contained"
-              sx={{ width: '100%' }}
+              sx={{ width: "100%" }}
             >
               <FileDownloadIcon /> Salary Sheet
             </Button>
@@ -230,14 +244,20 @@ const SalarySheet = () => {
         </Grid>
       </Box>
       <hr />
-      <Box sx={{ maxWidth: { xs: '340px', sm: '100%', md: '100%' }, margin: 'auto', mb: 4 }}>
-        <Box sx={{ width: '100%', display: 'block', whiteSpace: 'nowrap' }}>
+      <Box
+        sx={{
+          maxWidth: { xs: "340px", sm: "100%", md: "100%" },
+          margin: "auto",
+          mb: 4,
+        }}
+      >
+        <Box sx={{ width: "100%", display: "block", whiteSpace: "nowrap" }}>
           <PDFExport ref={pdfExportComponent}>
-            <Box sx={{ textAlign: 'center' }}>
+            <Box sx={{ textAlign: "center" }}>
               <img
                 src="https://i.ibb.co/MkzYpxC/hr-care-logo.png"
                 alt="hr care"
-                style={{ width: '20%' }}
+                style={{ width: "20%" }}
               />
               <Typography sx={{ fontSize: "1rem", mb: 0.5 }}>
                 {filterDates[0] ? (
@@ -263,18 +283,40 @@ const SalarySheet = () => {
             <TableContainer component={Paper}>
               <Table aria-label="customized table">
                 <TableHead>
-                  <TableRow style={{ backgroundColor: "var(--p_color) !important" }}>
-                    <StyledTableCell align="center">Name <hr /> ID</StyledTableCell>
-                    <StyledTableCell align="center">Designation <hr />Department</StyledTableCell>
-                    <StyledTableCell align="center">Basic <hr />Gross </StyledTableCell>
-                    <StyledTableCell align="center">Pay Day <hr />P / H / L</StyledTableCell>
-                    <StyledTableCell align="center">Bank <hr /> Account</StyledTableCell>
-                    <StyledTableCell align="center">Payable <br /> Amount</StyledTableCell>
+                  <TableRow
+                    style={{ backgroundColor: "var(--p_color) !important" }}
+                  >
+                    <StyledTableCell align="center">
+                      Name <hr /> ID
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      Designation <hr />
+                      Department
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      Basic <hr />
+                      Gross{" "}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      Pay Day <hr />P / H / L
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      Bank <hr /> Account
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      Payable <br /> Amount
+                    </StyledTableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {employees.map((employee) => (
-                    <SalaryData key={employee._id} employee={employee} date={filterDates.filter(date => date?.email === employee?.email)}></SalaryData>
+                    <SalaryData
+                      key={employee._id}
+                      employee={employee}
+                      date={filterDates.filter(
+                        (date) => date?.email === employee?.email
+                      )}
+                    ></SalaryData>
                   ))}
                 </TableBody>
               </Table>
@@ -282,7 +324,7 @@ const SalarySheet = () => {
           </PDFExport>
         </Box>
       </Box>
-    </Container >
+    </Container>
   );
 };
 
