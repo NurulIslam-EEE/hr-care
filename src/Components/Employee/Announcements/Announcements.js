@@ -112,7 +112,7 @@ const Announcements = () => {
 
   const [data, setData] = useState([]);
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/announcement/${user?.email}`)
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/announcement`)
       .then((res) => res.json())
       .then((data) => setData(data.data.reverse()));
   }, [user]);

@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 // First, create the thunk
 export const fetchTask = createAsyncThunk("taskAssign", async () => {
   const response = await fetch(
-    "https://hr-care-nurulislameees-projects.vercel.app/taskAssign"
+    `${process.env.REACT_APP_BACKEND_URL}/taskAssign`
   ).then((res) => res.json());
   return response;
 });

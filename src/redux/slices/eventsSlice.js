@@ -5,7 +5,7 @@ export const fetchAnnouncement = createAsyncThunk(
   "announcement/fetchEvents",
   async () => {
     const response = await fetch(
-      "https://hr-care-nurulislameees-projects.vercel.app/announcement"
+      `${process.env.REACT_APP_BACKEND_URL}/announcement`
     ).then((res) => res.json());
     return response;
   }
